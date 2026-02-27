@@ -19,7 +19,7 @@ const Signup = () => {
 
     try {
       setLoading(true);
-      const res = await axios.post(`${process.env.REACT_APP_BASE_URL}/signup`, {
+      const res = await axios.post(`${import.meta.env.VITE_BASE_URL}/signup`, {
         email,
         password,
         username,
