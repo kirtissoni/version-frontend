@@ -7,9 +7,6 @@ import Profile from "./components/user/Profile";
 import Login from "./components/auth/Login";
 import Signup from "./components/auth/Signup";
 import StarredRepositories from "./components/repo/StarredRepositories";
-import RepoScreen from "./components/repo/RepoScreen";
-import EditRepoScreen from "./components/repo/EditRepoScreen";
-import RepoDetail from "./components/repo/RepoDetail";
 
 //Auth Context
 import { useAuth } from "./authContext";
@@ -26,10 +23,12 @@ const ProjectRoutes = () => {
       setCurrentUser(userIdFromStorage);
     }
 
-
-    // Always redirect to login if not logged in (even after server restart)
-    if (!userIdFromStorage && window.location.pathname !== "/login") {
-      navigate("/login");
+    //protect routes
+    if (
+      !userIdFromStorage &&
+      !["/login", "/signup"].includes(window.location.pathname)
+    ) {
+      navigate("/signup");
     }
 
     //logged-in user should not see login page
@@ -58,18 +57,6 @@ const ProjectRoutes = () => {
     {
       path: "/repo",
       element: currentUser ? <StarredRepositories /> : <Signup />,
-    },
-    {
-      path: "/create",
-      element: currentUser ? <RepoScreen /> : <Signup />,
-    },
-    {
-      path: "/edit/:id",
-      element: currentUser ? <EditRepoScreen /> : <Signup />,
-    },
-    {
-      path: "/repo/:id",
-      element: currentUser ? <RepoDetail /> : <Signup />,
     },
   ]);
   return element;

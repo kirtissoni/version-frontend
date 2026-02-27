@@ -1,7 +1,6 @@
 import React, { useEffect, useState } from "react";
 import axios from "axios";
 import { useAuth } from "../../authContext";
-import { useNavigate } from "react-router-dom";
 import { PageHeader, Button } from "@primer/react";
 import { Link } from "react-router-dom";
 import "./auth.css";
@@ -18,26 +17,24 @@ const Login = () => {
   const [password, setPassword] = useState("");
   const [loading, setLoading] = useState(false);
   const { setCurrentUser } = useAuth();
-  const navigate = useNavigate();
 
   const handleLogin = async (e) => {
     e.preventDefault();
 
     try {
       setLoading(true);
-      const res = await axios.post("http://localhost:3002/login", {
-        email: email,
-        password: password,
+      const res = await axios.post(`${process.env.REACT_APP_BASE_URL}/login`, {
+        email,
+        password,
       });
 
       localStorage.setItem("token", res.data.token);
-      if (res.data.user && res.data.user.id) {
-        localStorage.setItem("userId", res.data.user.id);
-        setCurrentUser(res.data.user.id);
-      }
+      localStorage.setItem("userId", res.data.userId);
+
+      setCurrentUser(res.data.userId);
       setLoading(false);
 
-      navigate("/");
+      window.location.href = "/";
     } catch (err) {
       console.error(err);
       alert("Signup Failed!");

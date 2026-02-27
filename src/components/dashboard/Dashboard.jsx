@@ -1,7 +1,6 @@
 import React, { useState, useEffect } from "react";
 import "./dashboard.css";
 import Navbar from "../Navbar";
-import { Link } from "react-router-dom";
 
 const Dashboard = () => {
   const [repositories, setRepositories] = useState([]);
@@ -19,7 +18,7 @@ const Dashboard = () => {
         );
 
         const data = await response.json();
-        setRepositories(Array.isArray(data.repositories) ? data.repositories : []);
+        setRepositories(data.repositories);
       } catch (err) {
         console.error("Error while fetching repositories: ", err);
       }
@@ -77,13 +76,11 @@ const Dashboard = () => {
               onChange={(e) => setSearchQuery(e.target.value)}
             />
           </div>
-          {Array.isArray(searchResults) && searchResults.map((repo) => {
+          {searchResults.map((repo) => {
             return (
               <div key={repo._id}>
-                <Link to={`/repo/${repo._id}`} style={{ color: 'inherit', textDecoration: 'none' }}>
-                  <h4>{repo.name}</h4>
-                  <h4>{repo.description}</h4>
-                </Link>
+                <h4>{repo.name}</h4>
+                <h4>{repo.description}</h4>
               </div>
             );
           })}

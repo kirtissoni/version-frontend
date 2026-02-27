@@ -12,17 +12,17 @@ const Signup = () => {
   const [password, setPassword] = useState("");
   const [loading, setLoading] = useState(false);
 
-  const {setCurrentUser } = useAuth();
+  const { setCurrentUser } = useAuth();
 
   const handleSignup = async (e) => {
     e.preventDefault();
 
     try {
       setLoading(true);
-      const res = await axios.post("http://localhost:3002/signup", {
-        email: email,
-        password: password,
-        username: username,
+      const res = await axios.post(`${process.env.REACT_APP_BASE_URL}/signup`, {
+        email,
+        password,
+        username,
       });
 
       localStorage.setItem("token", res.data.token);
@@ -108,7 +108,7 @@ const Signup = () => {
 
         <div className="pass-box">
           <p>
-            Already have an account? <Link to="/login">Login</Link>
+            Already have an account? <Link to="/auth">Login</Link>
           </p>
         </div>
       </div>
